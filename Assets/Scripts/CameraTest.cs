@@ -16,6 +16,8 @@
 [ExecuteInEditMode]
 public class CameraTest : MonoBehaviour {
 
+    //SOLELY FOR TESTING IN THE EDITOR
+
     private Material material;
     private Texture2D vignetteTex;
 

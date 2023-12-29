@@ -60,7 +60,7 @@ namespace Assets.Scripts
             }
         }
 
-        private void OnBuildFlightViewInspectorPanel(BuildInspectorPanelRequest request)
+        private void OnBuildFlightViewInspectorPanel(BuildInspectorPanelRequest request) //flight panel settings
         {
             var g = new GroupModel("Lens Effects");
             request.Model.AddGroup(g);
@@ -87,6 +87,5 @@ namespace Assets.Scripts
             g.Add(vignetteIntensityModel);
             g.Add(allViewModesModel);
         }
-        private ModSettings.vignettes _vignetteSelected;
     }
 }

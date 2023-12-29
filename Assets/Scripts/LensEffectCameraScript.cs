@@ -16,11 +16,11 @@ public class LensEffectCameraScript : MonoBehaviour
         if (lensEffect.desiredMode)
         {
             lensEffect.lensMaterial.SetTexture("_mainTex", source);
-            Graphics.Blit(source, destination, lensEffect.lensMaterial);
+            Graphics.Blit(source, destination, lensEffect.lensMaterial); //applying post processing
         }
         else
         {
-            Graphics.Blit(source, destination);
+            Graphics.Blit(source, destination); //no post processing gets applied outside of the desired camera mode
         }
     }
 }

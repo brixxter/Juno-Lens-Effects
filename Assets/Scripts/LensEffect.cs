@@ -5,13 +5,10 @@ using System.Linq;
 using System.Text;
 using ModApi;
 using ModApi.Mods;
-using ModApi.Scenes.Events;
 using UnityEngine;
 using Assets.Scripts;
-using ModApi.Levels;
 using BeautifyEffect;
 using Assets.Scripts.Flight.GameView.Cameras;
-using ModApi.Flight.GameView;
 
 using Assets.Scripts.Flight;
 using Object = System.Object;
@@ -38,21 +35,16 @@ public class LensEffect : MonoBehaviour
         lensMaterial = new Material(Mod.Instance.ResourceLoader.LoadAsset<Shader>("LensShader"));
         if (lensMaterial == null) Debug.LogError("Lens Shader failed to load");
 
-
         dirtTex = Mod.Instance.ResourceLoader.LoadAsset<Texture2D>("lensDirt");
-
-        
-        lensMaterial.SetTexture("_dirtTex", dirtTex);
         if (dirtTex == null) Debug.LogError("dirtTex failed to load");
-
+    
+        lensMaterial.SetTexture("_dirtTex", dirtTex);
+       
         currentVignette = ModSettings.Instance.vignetteType;
 
         desiredMode = ModSettings.Instance.allViewModes;
 
         StartCoroutine(AddScriptDelay());
-
-        var craftdata = GetComponent<ModApi.Craft.ICraftFlightData>();
-        Debug.Log(craftdata.Gravity);
 
         ReloadSettings();
     }
@@ -78,22 +70,8 @@ public class LensEffect : MonoBehaviour
 
         lensMaterial.SetTexture("_vignetteTex", vignetteTex);
         lensMaterial.SetFloat("_vignetteIntensity", ModSettings.Instance.vignetteIntensity);
-        //lensMaterial.SetFloat("_distortionStrength", ModSettings.Instance.distortionStrength);
         lensMaterial.SetFloat("_aberrationStrength", ModSettings.Instance.aberrationStrength*0.01f);
     }
-
-    /*void OnRenderImage(RenderTexture source, RenderTexture destination)
-    {
-        if (desiredMode)
-        {
-            material.SetTexture("_mainTex", source);
-            Graphics.Blit(source, destination, material);
-        }
-        else
-        {
-            Graphics.Blit(source, destination);
-        }
-    }*/
 
     private void SettingChanged(Object sender, EventArgs e)
     {
@@ -110,15 +88,13 @@ public class LensEffect : MonoBehaviour
 
     private void OnCameraModeChanged(Assets.Scripts.Flight.GameView.Cameras.CameraMode newMode, Assets.Scripts.Flight.GameView.Cameras.CameraMode oldMode)
     {
-        //Debug.Log("Camera mode switched: " + newMode.Name);
         currentMode = newMode;
         modeCheck();
-        //CameraManagerScript.Instance.ImageEffects.Beautify.isDirty = desiredMode;
         CameraManagerScript.Instance.ImageEffects.Beautify.lensDirt = desiredMode;
         CameraManagerScript.Instance.ImageEffects.Beautify.lensDirtIntensity = ModSettings.Instance.lensDirtIntensity;
     }
 
-    private void OnMapViewChanged(bool foreground)
+    private void OnMapViewChanged(bool foreground) //prevents the dirt texture from resetting back to the default
     {
         if (!foreground) beautifyPlugin.lensDirtTexture = dirtTex;
     }
@@ -137,7 +113,7 @@ public class LensEffect : MonoBehaviour
         lensScript.enabled = desiredMode;
     }
 
-    IEnumerator AddScriptDelay()
+    IEnumerator AddScriptDelay() //ensures the post processing script is added to the camera last
     {
         yield return new WaitForSeconds(0.1f);
         lensScript = this.gameObject.AddComponent<LensEffectCameraScript>();
