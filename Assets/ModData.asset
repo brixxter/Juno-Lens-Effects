@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1366777262, guid: c37b925f2b4978342b2e0b83a8fa404a, type: 3}
+  m_Name: ModData
+  m_EditorClassIdentifier: 
+  _assemblies:
+  - LensEffects.dll
+  _author: Brixxter
+  _description: 'Adds some basic filters to camera parts. You can tweak or turn off
+    certain aspects in the settings.
+
+
+    Important: The filter only activates on
+    cameras named "Camera" with disabled night vision, unless you explicitly enable
+    it for all viewmodes (it will still be disabled for night vision).'
+  _loadPriority: 1000
+  _name: LensEffects
+  _otherAssets:
+  - {fileID: 2800000, guid: 504e7221843493742b5774f4fa1c183e, type: 3}
+  - {fileID: 4800000, guid: dc4adae01c70441499349a6678b354a3, type: 3}
+  - {fileID: 2800000, guid: cfb74d581f50cd04eb9faed9dd929d60, type: 3}
+  - {fileID: 2800000, guid: 4f5a40b43a38f7b4796d69af3f88e098, type: 3}
+  _prefabs: []
+  _steamDescription: 
+  _steamLanguage: English
+  _steamPreviewPath: 
+  _steamTags: 
+  _steamTitle: 
+  _steamVisibility: 0
+  _versionMajor: 1
+  _versionMinor: 5
+  _partCategories: []
+  _parts: []
+  _partStyleExtensions: []
+  _partTextureStyles: []
+  _persistentObjects: []
+  _uiResourceDatabases: []
