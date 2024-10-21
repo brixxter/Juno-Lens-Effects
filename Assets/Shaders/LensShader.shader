@@ -14,26 +14,17 @@ Shader "LensShader" {
             uniform sampler2D _MainTex;
             uniform sampler2D _vignetteTex;
 
-            uniform float4 _LensDistortionOffset_R;
-            uniform float4 _LensDistortionOffset_G;
-            uniform float4 _LensDistortionOffset_B;
-
             uniform float _vignetteIntensity;
          
             uniform float  _aberrationStrength;
-            uniform float _Size;
-            uniform float _Falloff;
 
-            fixed4 frag(v2f_img i) : Color {
-                float4 chromColour;
-               
-                float4 result;
+            fixed4 frag(v2f_img i) : SV_TARGET
+            {
+                float4 chromColour, result;
 
                 float2 uv_centered = i.uv - 0.5;
-  
-                float vignette = 1.0f - smoothstep(_Size, _Size - _Falloff, length(uv_centered));
-
-                float rOffset= uv_centered * vignette * _aberrationStrength;
+        
+                float rOffset= uv_centered * _aberrationStrength;
                 float bOffset = -rOffset;
 
                 float r = dot(tex2D(_MainTex, i.uv + rOffset), float3(1.0f, 0.0f, 0.0f));
@@ -41,8 +32,8 @@ Shader "LensShader" {
                 float b = dot(tex2D(_MainTex, i.uv + bOffset), float3(0.0f, 0.0f, 1.0f));
                 chromColour.rgb = float3(r, g, b);
 
-                float4 vignetteCol = tex2D(_vignetteTex, i.uv);
-                result.rgb = min(1,(1-vignetteCol.a*_vignetteIntensity))*chromColour.rgb;
+                float4 vignetteCol = tex2D(_vignetteTex, i.uv); //REPLACE ASAP
+                result.rgb = min(1, (1 - vignetteCol.a * _vignetteIntensity)) * chromColour.rgb;
                 return result;
             }
             ENDCG

@@ -48,8 +48,9 @@ namespace Assets.Scripts
         public NumericSetting<float> vignetteIntensity { get; private set;}
         public EnumSetting<vignettes> vignetteType { get; private set;}
         //public NumericSetting<float> distortionStrength { get; private set;}
-        public NumericSetting<float> aberrationStrength { get; set;}
+        public NumericSetting<float> aberrationStrength { get; private set;}
         public BoolSetting allViewModes { get; private set;}
+        public NumericSetting<int> shadowCascades { get; private set; }
       /*  public BoolSetting useDOF { get; private set;}
         public NumericSetting<float> dofDistance { get; private set;}
         public NumericSetting<float> dofBlurIntensity { get; private set;}
@@ -89,17 +90,8 @@ namespace Assets.Scripts
                 .SetDescription("By default, lens dirt, vignettes etc. only are visible when viewing a camera. Enable this setting if you want to use filters on all viewmodes.")
                 .SetDefault(false);
 
-           /* this.useDOF = this.CreateBool("Enable depth of field")
-                .SetDefault(false);
-
-            this.dofDistance = this.CreateNumeric<float>("DoF Distance", 0, 1000, 0.1f)
-                .SetDefault(20);
-
-            this.dofBlurIntensity = this.CreateNumeric<float>("DoF blur intensity", 0.01f, 2, 0.01f)
-                .SetDefault(0.5f);
-
-            this.dofAperture = this.CreateNumeric<float>("DoF Aperture", 0, 200, 1)
-                .SetDefault(1); */ //TBD
+            this.shadowCascades = this.CreateNumeric<int>("Shadow Cascades", 0, 4, 1)
+                .SetDefault(4);
         }
     }
 }

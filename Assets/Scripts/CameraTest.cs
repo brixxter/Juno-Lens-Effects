@@ -36,7 +36,6 @@ public class CameraTest : MonoBehaviour {
     {       
         material.SetTexture("_mainTex",source);
         material.SetFloat("_vignetteIntensity", vignetteIntensity);
-        material.SetFloat("_distortionStrength",distortionStrength);
         material.SetFloat("_aberrationStrength", aberrationStrength*0.01f);
         Graphics.Blit (source, destination, material);
     }

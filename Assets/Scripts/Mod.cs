@@ -55,7 +55,7 @@ namespace Assets.Scripts
             if (Game.InFlightScene)
             {
                 var cam = Game.Instance.FlightScene?.ViewManager.GameView.GameCamera.NearCamera;
-                cam.gameObject.AddComponent<LensEffect>();
+                cam.gameObject.AddComponent<LensEffects>();
                 if (cam == null) Debug.Log("No camera found");
             }
         }
