@@ -1,8 +1,6 @@
 
 using System;
 using System.Collections;
-using System.Linq;
-using System.Text;
 using ModApi;
 using ModApi.Mods;
 using UnityEngine;
@@ -77,7 +75,7 @@ public class LensEffects : MonoBehaviour
         lensMaterial.SetFloat("_vignetteFeather", ModSettings.Instance.vignetteFeather);
         lensMaterial.SetFloat("_aberrationStrength", ModSettings.Instance.aberrationStrength*0.01f);
         lensMaterial.SetInt("_useNoise", ModSettings.Instance.noisy ? 1 : 0);
-        lensMaterial.SetInt("_time", 4000*(int)Game.Instance.FlightScene.FlightState.Time);
+        lensMaterial.SetInt("_offset", 500*(int)UnityEngine.Random.Range(0, 10000));
     }
 
     private void SettingChanged(Object sender, EventArgs e)

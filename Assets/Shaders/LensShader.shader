@@ -60,8 +60,8 @@ Shader "LensShader" {
                     uint2 val = 100*i.uv * 2 - 1;
                     uint seed = val.x + 100 * val.y + 100 * _time;
                     float rand = lerp(0, 1, hash(seed));
-                    if(rand > 0.999)
-                    chromColour.rgb += 0.2 * rand;
+                    if(rand > 0.9995)
+                    chromColour.rgb += 0.15 * rand;
                 }
 
                 result.rgb = min(1, (1 - vignetteStrength)) * chromColour.rgb;
