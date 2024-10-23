@@ -26,6 +26,12 @@
 # Visual Studio cache directory
 .vs/
 
+/.vscode/
+
+# Unimportant mod related files
+
+/ModAssetBundles
+
 # Gradle cache directory
 .gradle/
 
