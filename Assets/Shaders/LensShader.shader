@@ -2,7 +2,6 @@ Shader "LensShader" {
     Properties {
         _MainTex ("Base (RGB)", 2D) = "white" {}
         _dirtTex ("Dirt texture", 2D) = "white" {}
-        _vignetteTex ("Vignette texture", 2D) = "white" {}
     }
     SubShader {
         Pass {
@@ -12,28 +11,60 @@ Shader "LensShader" {
             #include "UnityCG.cginc"
             
             uniform sampler2D _MainTex;
-            uniform sampler2D _vignetteTex;
+            
+            uniform int _time;
+            uniform float _vignetteRadius, _vignetteFeather, _aberrationStrength, _aspectRatio;
+            uniform bool _useNoise;
 
-            uniform float _vignetteIntensity;
-         
-            uniform float  _aberrationStrength;
+            float hash(uint n) {
+				// integer hash copied from Hugo Elias
+				n = (n << 13U) ^ n;
+				n = n * (n * n * 15731U + 0x789221U) + 0x1376312589U;
+				return float(n & uint(0x7fffffffU)) / float(0x7fffffff);
+			}
 
-            fixed4 frag(v2f_img i) : SV_TARGET
+            float ratioLength(float2 uv)
+            {
+                uv.x = uv.x * _aspectRatio;
+
+                return length(uv);
+            }
+
+            float vignetteFalloff(float2 uv)
+            {
+                float radius = 0.2;
+                float circle = ratioLength(2 * uv);
+                float mask = smoothstep(_vignetteRadius, _vignetteRadius + _vignetteFeather, circle);
+                return mask;
+            }
+
+            float4 frag(v2f_img i) : SV_TARGET
             {
                 float4 chromColour, result;
+                float vignetteStrength;
 
                 float2 uv_centered = i.uv - 0.5;
-        
-                float rOffset= uv_centered * _aberrationStrength;
+
+                float rOffset = uv_centered * _aberrationStrength;
                 float bOffset = -rOffset;
 
                 float r = dot(tex2D(_MainTex, i.uv + rOffset), float3(1.0f, 0.0f, 0.0f));
                 float g = dot(tex2D(_MainTex, i.uv), float3(0.0f, 1.0f, 0.0f)); 
                 float b = dot(tex2D(_MainTex, i.uv + bOffset), float3(0.0f, 0.0f, 1.0f));
                 chromColour.rgb = float3(r, g, b);
+                
+                vignetteStrength = vignetteFalloff(uv_centered);       
+                
+                if(_useNoise)
+                {
+                    uint2 val = 100*i.uv * 2 - 1;
+                    uint seed = val.x + 100 * val.y + 100 * _time;
+                    float rand = lerp(0, 0.05, hash(seed));
+                    chromColour.rgb += rand;
+                }
 
-                float4 vignetteCol = tex2D(_vignetteTex, i.uv); //REPLACE ASAP
-                result.rgb = min(1, (1 - vignetteCol.a * _vignetteIntensity)) * chromColour.rgb;
+                result.rgb = min(1, (1 - vignetteStrength)) * chromColour.rgb;
+
                 return result;
             }
             ENDCG

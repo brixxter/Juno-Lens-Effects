@@ -19,13 +19,12 @@ public class LensEffects : MonoBehaviour
     private Beautify beautifyPlugin;
     public Material lensMaterial;
     private Texture2D dirtTex;
-    private Texture2D vignetteTex;
-    private ModSettings.vignettes currentVignette;
+    public ModSettings.vignettes currentVignette;
     public bool desiredMode;
-    private Assets.Scripts.Flight.GameView.Cameras.CameraMode currentMode;
+    public Assets.Scripts.Flight.GameView.Cameras.CameraMode currentMode;
     private LensEffectCameraScript lensScript;
 
-    void Start()
+    void Awake()
     {
         if(Instance!=null)
         {
@@ -59,7 +58,6 @@ public class LensEffects : MonoBehaviour
 
     void ReloadSettings()
     {
-        QualitySettings.shadowCascades = ModSettings.Instance.shadowCascades;
         beautifyPlugin.lensDirtTexture = dirtTex;
         beautifyPlugin.lensDirtIntensity = ModSettings.Instance.lensDirtIntensity;
         beautifyPlugin.lensDirt = desiredMode;
@@ -68,18 +66,18 @@ public class LensEffects : MonoBehaviour
 
         if (currentVignette == ModSettings.vignettes.ellipse)
         {
-            vignetteTex = Mod.Instance.ResourceLoader.LoadAsset<Texture2D>("lensVignette1");
-            if (vignetteTex == null) Debug.LogError("Ellipse vignette failed to load");
+            lensMaterial.SetFloat("_aspectRatio", 1); //ensures the vignette always adjusts to fit the screen bounds. Passing in a 1 was cheaper than running some sort of condition in the shader
         }
         else if (currentVignette == ModSettings.vignettes.engineeringCam)
         {
-            vignetteTex = Mod.Instance.ResourceLoader.LoadAsset<Texture2D>("lensVignette2");
-            if (vignetteTex == null) Debug.LogError("Engineering cam vignette failed to load");
-        }
+            lensMaterial.SetFloat("_aspectRatio", Game.Instance.FlightScene.ViewManager.GameView.GameCamera.NearCamera.aspect); //keeps the vignette circular no matter the aspect ratio
+        } 
 
-        lensMaterial.SetTexture("_vignetteTex", vignetteTex);
-        lensMaterial.SetFloat("_vignetteIntensity", ModSettings.Instance.vignetteIntensity);
+        lensMaterial.SetFloat("_vignetteRadius", ModSettings.Instance.vignetteRadius);
+        lensMaterial.SetFloat("_vignetteFeather", ModSettings.Instance.vignetteFeather);
         lensMaterial.SetFloat("_aberrationStrength", ModSettings.Instance.aberrationStrength*0.01f);
+        lensMaterial.SetInt("_useNoise", ModSettings.Instance.noisy ? 1 : 0);
+        lensMaterial.SetInt("_time", 4000*(int)Game.Instance.FlightScene.FlightState.Time);
     }
 
     private void SettingChanged(Object sender, EventArgs e)
@@ -122,7 +120,7 @@ public class LensEffects : MonoBehaviour
         lensScript.enabled = desiredMode;
     }
 
-    IEnumerator AddScriptDelay() //ensures the post processing script is added to the camera last
+    IEnumerator AddScriptDelay() //ensures the post processing script is added to the camera last. Is this really the best way? Some reports of null refs using vizzy switching cameras upon scene load
     {
         yield return new WaitForSeconds(0.1f);
         lensScript = this.gameObject.AddComponent<LensEffectCameraScript>();

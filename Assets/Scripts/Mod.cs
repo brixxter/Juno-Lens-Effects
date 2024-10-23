@@ -67,7 +67,8 @@ namespace Assets.Scripts
 
             var dirtIntensity = ModSettings.Instance.lensDirtIntensity;
             var aberrationStrength = ModSettings.Instance.aberrationStrength;
-            var vignetteIntensity = ModSettings.Instance.vignetteIntensity;
+            var vignetteRadius = ModSettings.Instance.vignetteRadius;
+            var vignetteFeather = ModSettings.Instance.vignetteFeather;
             var allViewModes = ModSettings.Instance.allViewModes;
 
             var dirtIntensityModel = new SliderModel(
@@ -76,15 +77,19 @@ namespace Assets.Scripts
             var aberrationStrengthModel = new SliderModel(
                 "Chromatic aberration strength", () => aberrationStrength.Value, s => aberrationStrength.UpdateAndCommit(s), aberrationStrength.Min, aberrationStrength.Max, false);
 
-            var vignetteIntensityModel = new SliderModel(
-                "Vignette intensity", () => vignetteIntensity.Value, s => vignetteIntensity.UpdateAndCommit(s), vignetteIntensity.Min, vignetteIntensity.Max, false);
+            var vignetteRadiusModel = new SliderModel(
+                "Vignette radius", () => vignetteRadius.Value, s => vignetteRadius.UpdateAndCommit(s), vignetteRadius.Min, vignetteRadius.Max, false);
+
+            var vignetteFeatherModel = new SliderModel(
+                "Vignette feather", () => vignetteFeather.Value, s => vignetteFeather.UpdateAndCommit(s), vignetteFeather.Min, vignetteFeather.Max, false);
 
             var allViewModesModel = new ToggleModel(
                 "Use effects in all viewmodes", () => allViewModes.Value, s => allViewModes.UpdateAndCommit(s));
 
             g.Add(dirtIntensityModel);
             g.Add(aberrationStrengthModel);
-            g.Add(vignetteIntensityModel);
+            g.Add(vignetteRadiusModel);
+            g.Add(vignetteFeatherModel);
             g.Add(allViewModesModel);
         }
     }
