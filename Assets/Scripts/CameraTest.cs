@@ -32,7 +32,7 @@ public class CameraTest : MonoBehaviour {
         material.SetFloat("_vignetteFeather", vignetteFeather);
         material.SetFloat("_aberrationStrength", aberrationStrength*0.01f);
         material.SetInt("_useNoise", 1);
-        material.SetInt("_time", 500*(int)UnityEngine.Random.Range(0, 10000));
+        material.SetInt("_offset", 500*(int)UnityEngine.Random.Range(0, 10000));
         
         if (vignetteMode == 0)
         {

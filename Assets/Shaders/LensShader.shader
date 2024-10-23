@@ -12,7 +12,7 @@ Shader "LensShader" {
             
             uniform sampler2D _MainTex;
             
-            uniform int _time;
+            uniform int _offset;
             uniform float _vignetteRadius, _vignetteFeather, _aberrationStrength, _aspectRatio;
             uniform bool _useNoise;
 
@@ -57,8 +57,8 @@ Shader "LensShader" {
                 
                 if(_useNoise)
                 {
-                    uint2 val = 100*i.uv * 2 - 1;
-                    uint seed = val.x + 100 * val.y + 100 * _time;
+                    uint2 val = 200*i.uv * 2 - 1;
+                    uint seed = val.x + 100 * val.y + 100 * _offset;
                     float rand = lerp(0, 1, hash(seed));
                     if(rand > 0.9995)
                     chromColour.rgb += 0.15 * rand;
