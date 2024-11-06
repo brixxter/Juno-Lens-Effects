@@ -74,7 +74,7 @@ public class LensEffects : MonoBehaviour
         lensMaterial.SetFloat("_vignetteRadius", ModSettings.Instance.vignetteRadius);
         lensMaterial.SetFloat("_vignetteFeather", ModSettings.Instance.vignetteFeather);
         lensMaterial.SetFloat("_aberrationStrength", ModSettings.Instance.aberrationStrength*0.01f);
-        lensMaterial.SetInt("_useNoise", ModSettings.Instance.noisy ? 1 : 0);
+        //lensMaterial.SetInt("_useNoise", ModSettings.Instance.noisy ? 1 : 0);
     }
 
     private void SettingChanged(Object sender, EventArgs e)

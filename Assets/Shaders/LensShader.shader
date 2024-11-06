@@ -14,14 +14,14 @@ Shader "LensShader" {
             
             uniform int _offset;
             uniform float _vignetteRadius, _vignetteFeather, _aberrationStrength, _aspectRatio;
-            uniform bool _useNoise;
+            //uniform bool _useNoise;
 
-            float hash(uint n) {
+            /*float hash(uint n) {
 				// integer hash copied from Hugo Elias
 				n = (n << 13U) ^ n;
 				n = n * (n * n * 15731U + 0x789221U) + 0x1376312589U;
 				return float(n & uint(0x7fffffffU)) / float(0x7fffffff);
-			}
+			}*/
 
             float ratioLength(float2 uv)
             {
@@ -55,14 +55,14 @@ Shader "LensShader" {
                 
                 vignetteStrength = vignetteFalloff(uv_centered);       
                 
-                if(_useNoise)
+                /*if(_useNoise) // Not very hapy with how the noise is looking but I decided to leave the code in, in case I change my mind
                 {
                     uint2 val = 200*i.uv * 2 - 1;
                     uint seed = val.x + 100 * val.y + 100 * _offset;
                     float rand = lerp(0, 1, hash(seed));
-                    if(rand > 0.9995)
+                    if(rand > 0.9995) // letting only the brightest spots pass
                     chromColour.rgb += 0.15 * rand;
-                }
+                }*/
 
                 result.rgb = min(1, (1 - vignetteStrength)) * chromColour.rgb;
 
