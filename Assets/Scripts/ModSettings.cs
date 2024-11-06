@@ -50,7 +50,7 @@ namespace Assets.Scripts
 
         public EnumSetting<vignettes> vignetteType { get; private set;}
         public NumericSetting<float> aberrationStrength { get; private set;}
-        public BoolSetting noisy { get; private set;}
+        //public BoolSetting noisy { get; private set;}
         public BoolSetting allViewModes { get; private set;}
        
         /// <summary>
@@ -82,9 +82,9 @@ namespace Assets.Scripts
                 .SetDescription("Amount of chromatic aberration applied to the distorted image")
                 .SetDefault(0.6f);
 
-            this.noisy = this.CreateBool("Radiation Noise")
+            /*this.noisy = this.CreateBool("Radiation Noise")
                 .SetDescription("Image will become noisy in vacuum")
-                .SetDefault(true);
+                .SetDefault(true);*/
 
             this.allViewModes = this.CreateBool("Use filters on all viewmodes")
                 .SetDescription("By default, lens dirt, vignettes etc. only are visible when viewing a camera. Enable this setting if you want to use filters on all viewmodes.")
